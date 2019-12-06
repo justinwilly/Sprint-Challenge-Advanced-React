@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+import Search from './components/Search';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+
+class App extends React.Component{
+  constructor(){
+    super();
+    this.state = {
+      soccerData: [],
+    }
+  }
+
+  //class component fetching the data from the API
+  componentDidMount(){
+    axios
+      .get('http://localhost:5000/api/players')
+      .then(response => {
+        console.log(response.data)
+        this.setState({
+          soccerData: response.data
+        })
+      })
+      .catch(error => console.log(error))
+  }
+
+  //displays player data thats recieved from API
+  render(){return (
+    <div className="container">
+      <h1>Women's World Cup</h1>
+      <Search soccerData={this.state.soccerData}/>
     </div>
   );
+  }
 }
 
 export default App;
